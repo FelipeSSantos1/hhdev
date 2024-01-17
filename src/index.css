@@ -9,6 +9,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+  outline: none;
+  font-size: 14px;
+  border-radius: 7px;
 }
 
 code {

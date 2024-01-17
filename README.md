@@ -7,7 +7,7 @@
     - select Configure Default Formatter
     - select Biome.
     - check if your vscode setting is setup for format on save
-      - `"[typescriptreact]": { `
+      - `"[typescriptreact]": {`
         - `"editor.defaultFormatter": "biomejs.biome",`
         - `"editor.formatOnSave": true,`
       - `}`

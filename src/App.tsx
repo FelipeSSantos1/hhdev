@@ -14,7 +14,7 @@ import "@coreui/coreui/dist/css/coreui.min.css";
 
 function App() {
   return (
-    <div>
+    <div className="bg-teal-950">
       <CSidebar>
         <CSidebarNav className="bg-teal-950">
           <CNavTitle className="bg-black/10 inline-flex">

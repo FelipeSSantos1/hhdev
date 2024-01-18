@@ -11,8 +11,14 @@
     "version": "0.1.0"
   },
   "tauri": {
+    "macOSPrivateApi": true,
     "allowlist": {
-      "all": false
+      "all": true
+    },
+    "systemTray": {
+      "iconPath": "icons/icon.ico",
+      "iconAsTemplate": false,
+      "menuOnLeftClick": false
     },
     "bundle": {
       "active": true,
@@ -56,10 +62,17 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
         "resizable": true,
+        "visible": false,
         "title": "HH Dev",
-        "width": 800
+        "height": 426,
+        "width": 785,
+        "hiddenTitle": true,
+        "titleBarStyle": "Overlay",
+        "alwaysOnTop": true,
+        "decorations": false,
+        "transparent": true,
+        "fileDropEnabled": false
       }
     ]
   }

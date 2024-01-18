@@ -1,6 +1,7 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { useState } from "react";
 import "./App.css";
+import Button from "@mui/material/Button";
 import reactLogo from "./assets/react.svg";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
   return (
     <div className="container">
       <h1>Welcome to Tauri!</h1>
+      <Button variant="contained">Hello world</Button>
 
       <div className="row">
         <a href="https://vitejs.dev" target="_blank" rel="noreferrer">

@@ -3,7 +3,7 @@
 
 use tauri::{SystemTray, Manager, SystemTrayEvent};
 use tauri_plugin_positioner::{Position, WindowExt};
-use window_vibrancy::{apply_vibrancy, NSVisualEffectMaterial, NSVisualEffectState};
+use window_vibrancy::{apply_vibrancy, NSVisualEffectMaterial};
 
 fn main() {
   let tray = SystemTray::new().with_title("HH Dev");

@@ -39,7 +39,7 @@
         "resizable": true,
         "visible": false,
         "title": "HH Dev",
-        "width": 800,
+        "width": 750,
         "height": 600,
         "hiddenTitle": true,
         "titleBarStyle": "Overlay",

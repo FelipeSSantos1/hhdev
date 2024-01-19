@@ -5,4 +5,5 @@ export type Props = {
     Icon: SvgIconComponent;
     url: string;
     color?: string;
+    func?: () => void;
 }

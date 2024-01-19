@@ -10,12 +10,13 @@
 use tauri::{SystemTray, Manager, SystemTrayEvent};
 use tauri_plugin_positioner::{Position, WindowExt};
 use window_vibrancy::{apply_vibrancy, NSVisualEffectMaterial, NSVisualEffectState};
+use webbrowser;
 
 fn main() {
     let tray = SystemTray::new().with_title("HH Dev");
 
     tauri::Builder::default()
-        // .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![open_slack])
         .plugin(tauri_plugin_positioner::init())
         .system_tray(tray)
         .setup(|app| {
@@ -60,4 +61,14 @@ fn main() {
         })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+#[tauri::command]
+fn open_slack(url: String) -> Result<(), String> {
+    println!("Opening URL: {}", url);
+    if webbrowser::open(&url).is_ok() {
+        Ok(())
+    } else {
+        Err(String::from("Failed to open browser"))
+    }
 }

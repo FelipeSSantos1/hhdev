@@ -45,8 +45,6 @@ fn main() {
                     ..
                 } => {
                     let window = app.get_window("main").unwrap();
-                    // TrayLeft is not working as expected
-                    // let _ = window.move_window(Position::TrayLeft);
                     let _ = window.move_window(Position::TopRight);
                     // toggle application window
                     if window.is_visible().unwrap() {
@@ -64,9 +62,10 @@ fn main() {
 }
 
 #[tauri::command]
-fn open_slack(url: String) -> Result<(), String> {
+fn open_slack(window: tauri::Window, url: String) -> Result<(), String> {
     println!("Opening URL: {}", url);
     if webbrowser::open(&url).is_ok() {
+        window.close().unwrap();
         Ok(())
     } else {
         Err(String::from("Failed to open browser"))

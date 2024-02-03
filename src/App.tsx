@@ -19,10 +19,12 @@ import {
 } from "@mui/icons-material";
 import MenuItem from "./components/menuItem";
 import { invoke } from "@tauri-apps/api/tauri";
+import { getCurrent } from "@tauri-apps/api/window";
 
 function App() {
   const openSlack = (url: string) => {
-    invoke("open_slack", { url });
+    const window = getCurrent();
+    invoke("open_slack", { window, url }).catch(console.error);
   };
 
   return (

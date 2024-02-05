@@ -1,12 +1,12 @@
 import {
   Avatar,
   Typography,
-  Paper,
   Divider,
   Accordion,
   AccordionDetails,
   AccordionSummary,
 } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
 import {
   LaptopMacOutlined,
   SupportOutlined,
@@ -16,10 +16,12 @@ import {
   BusinessOutlined,
   ArrowDropDown,
   CallMergeOutlined,
+  TextSnippetOutlined,
 } from "@mui/icons-material";
 import MenuItem from "./components/menuItem";
 import { invoke } from "@tauri-apps/api/tauri";
 import { getCurrent } from "@tauri-apps/api/window";
+import Role from "./components/role";
 
 function App() {
   const openSlack = (url: string) => {
@@ -29,15 +31,23 @@ function App() {
 
   return (
     <div>
-      <div className="flex items-center m-4">
-        <Avatar alt="Remy Sharp" src="hhLogo.png" />
-        <Typography variant="h6" className="text-white pl-2">
+      <div className="flex items-center m-4 ">
+        <Avatar alt="Hinge Health" src="hhLogo.png" />
+        <Typography
+          variant="h6"
+          className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent pl-2"
+        >
           HH Dev
         </Typography>
       </div>
-      <div className="flex m-2 gap-2 justify-evenly">
-        <Paper className="p-2" elevation={3}>
-          <Typography variant="h6">Basics</Typography>
+      <div className="m-2 gap-2 justify-evenly grid grid-cols-3 gri">
+        <div className="p-2 bg-white rounded-md shadow-md">
+          <Typography
+            variant="h6"
+            className="bg-gradient-to-r from-indigo-500 to-blue-500 bg-clip-text text-transparent"
+          >
+            Basics
+          </Typography>
           <Divider className="pt-2" />
           <MenuItem
             Icon={LaptopMacOutlined}
@@ -55,11 +65,16 @@ function App() {
             text="Request a lib addition"
           />
           <MenuItem Icon={SupportOutlined} url="#" text="IT support" />
-        </Paper>
-        <Paper className="p-2" elevation={3}>
+        </div>
+        <div className="p-2 bg-white rounded-md shadow-md">
           <div className="flex items-center">
             <Avatar alt="Slack" src="slack.webp" sx={{ width: 32, height: 32 }} />
-            <Typography variant="h6">Slack Channels</Typography>
+            <Typography
+              variant="h6"
+              className="bg-gradient-to-r from-indigo-500 to-blue-500 bg-clip-text text-transparent"
+            >
+              Slack Channels
+            </Typography>
           </div>
           <Divider className="pt-2" />
           <MenuItem
@@ -83,9 +98,14 @@ function App() {
             func={() => openSlack("https://hingehealth.enterprise.slack.com/archives/C0110JX81HR")}
             text="App Release"
           />
-        </Paper>
-        <Paper className="p-2 flex-1" elevation={3}>
-          <Typography variant="h6">Admin</Typography>
+        </div>
+        <div className="p-2 bg-white rounded-md shadow-md">
+          <Typography
+            variant="h6"
+            className="bg-gradient-to-r from-indigo-500 to-blue-500 bg-clip-text text-transparent"
+          >
+            Admin
+          </Typography>
           <Divider className="pt-2" />
           <MenuItem Icon={BusinessOutlined} url="https://app.getguru.com/dashboard" text="Guru" />
           <MenuItem
@@ -98,13 +118,47 @@ function App() {
             url="https://www.myworkday.com/hingehealth/d/pex/home.htmld"
             text="Workday"
           />
-        </Paper>
-      </div>
-      <div className="flex m-2 gap-2 justify-evenly">
-        <Paper className="p-2 flex-1" elevation={3}>
+        </div>
+        <div className="p-2 bg-white rounded-md shadow-md col-span-3">
+          <Typography
+            variant="h6"
+            className="bg-gradient-to-r from-indigo-500 to-blue-500 bg-clip-text text-transparent"
+          >
+            Release 1.200.0
+          </Typography>
+          <div className="flex justify-between mt-2">
+            <Typography className="text-stone-900">Rollout 20%</Typography>
+            <Typography className="text-stone-900" variant="body2">
+              March 23
+            </Typography>
+          </div>
+          <LinearProgress variant="determinate" value={20} className="mb-2" />
+          <div className="grid grid-cols-2 gap-2">
+            <Role
+              name="Eduardo Pisapia"
+              what="The Pilot"
+              picture="https://avatars.githubusercontent.com/u/82107248"
+            />
+            <Role
+              name="Oak Chantosa"
+              what="On Call"
+              picture="https://avatars.githubusercontent.com/u/68754854"
+            />
+          </div>
+          <MenuItem
+            Icon={TextSnippetOutlined}
+            url="https://github.com/hinge-health/phoenix/releases/tag/v1.143.0"
+            text="Changelog"
+            align="justify-end"
+          />
+        </div>
+        <div className="p-2 bg-white rounded-md shadow-md col-span-3">
           <div className="flex items-center mb-2">
             <Avatar alt="Github" src="github-mark.png" sx={{ width: 32, height: 32 }} />
-            <Typography variant="h6" className="pl-2">
+            <Typography
+              variant="h6"
+              className="bg-gradient-to-r from-indigo-500 to-blue-500 bg-clip-text text-transparent pl-2"
+            >
               GitHub
             </Typography>
           </div>
@@ -152,7 +206,7 @@ function App() {
               />
             </AccordionDetails>
           </Accordion>
-        </Paper>
+        </div>
       </div>
     </div>
   );

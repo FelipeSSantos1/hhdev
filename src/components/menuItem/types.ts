@@ -6,4 +6,5 @@ export type Props = {
     url: string;
     color?: string;
     func?: () => void;
+    align?: "justify-start" | "justify-end" | "justify-center" | "justify-between" | "justify-around" | "justify-evenly";
 }

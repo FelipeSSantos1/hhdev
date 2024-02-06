@@ -5,6 +5,8 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
+  TextField,
 } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import {
@@ -17,6 +19,8 @@ import {
   ArrowDropDown,
   CallMergeOutlined,
   TextSnippetOutlined,
+  PhoneAndroid,
+  PhoneIphone,
 } from "@mui/icons-material";
 import MenuItem from "./components/menuItem";
 import { invoke } from "@tauri-apps/api/tauri";
@@ -206,6 +210,34 @@ function App() {
               />
             </AccordionDetails>
           </Accordion>
+        </div>
+        <div className="p-2 bg-white rounded-md shadow-md col-span-2">
+          <Typography
+            variant="h6"
+            className="bg-gradient-to-r from-indigo-500 to-blue-500 bg-clip-text text-transparent"
+          >
+            Bitrise
+          </Typography>
+          <Typography className="text-stone-400" variant="body2">
+            Create a build for a specific branch
+          </Typography>
+          <div className="flex gap-2">
+            <TextField id="branch" label="Branch" variant="filled" />
+            <Button variant="contained" size="small">
+              Trigger a Dev Build
+            </Button>
+          </div>
+        </div>
+        <div className="p-2 bg-white rounded-md shadow-md">
+          <Typography
+            variant="h6"
+            className="bg-gradient-to-r from-indigo-500 to-blue-500 bg-clip-text text-transparent"
+          >
+            Simulators
+          </Typography>
+          <Divider className="pt-2" />
+          <MenuItem Icon={PhoneIphone} url="" text="iPhone 15 Pro" />
+          <MenuItem Icon={PhoneAndroid} url="" text="Pixel 6" />
         </div>
       </div>
     </div>

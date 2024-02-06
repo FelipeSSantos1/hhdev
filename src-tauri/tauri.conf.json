@@ -40,7 +40,7 @@
         "visible": false,
         "title": "HH Dev",
         "width": 750,
-        "height": 700,
+        "height": 850,
         "hiddenTitle": true,
         "titleBarStyle": "Overlay",
         "alwaysOnTop": true,

@@ -222,7 +222,7 @@ function App() {
             Create a build for a specific branch
           </Typography>
           <div className="flex gap-2">
-            <TextField id="branch" label="Branch" variant="filled" />
+            <TextField id="branch" label="Branch" variant="filled" size="small" />
             <Button variant="contained" size="small">
               Trigger a Dev Build
             </Button>
@@ -236,7 +236,12 @@ function App() {
             Simulators
           </Typography>
           <Divider className="pt-2" />
-          <MenuItem Icon={PhoneIphone} url="" text="iPhone 15 Pro" />
+          <MenuItem
+            Icon={PhoneIphone}
+            url="#"
+            func={() => invoke("open_ios")}
+            text="iPhone 15 Pro"
+          />
           <MenuItem Icon={PhoneAndroid} url="" text="Pixel 6" />
         </div>
       </div>

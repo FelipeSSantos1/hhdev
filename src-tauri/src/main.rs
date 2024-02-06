@@ -10,6 +10,7 @@
 use tauri::{SystemTray, Manager, SystemTrayEvent, CustomMenuItem, SystemTrayMenu};
 use tauri_plugin_positioner::{Position, WindowExt};
 use window_vibrancy::{apply_vibrancy, NSVisualEffectMaterial, NSVisualEffectState};
+use std::process::Command;
 use webbrowser;
 
 fn main() {
@@ -22,7 +23,7 @@ fn main() {
     let tray = SystemTray::new().with_menu(tray_menu);
 
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![open_slack])
+        .invoke_handler(tauri::generate_handler![open_slack, open_ios])
         .plugin(tauri_plugin_positioner::init())
         .system_tray(tray)
         .setup(|app| {
@@ -84,4 +85,17 @@ fn open_slack(window: tauri::Window, url: String) -> Result<(), String> {
     } else {
         Err(String::from("Failed to open browser"))
     }
+}
+
+#[tauri::command]
+fn open_ios() {
+    let output = Command::new("open")
+        .arg("-a")
+        .arg("Simulator")
+        .output()
+        .expect("Failed to execute command");
+
+    println!("status: {}", output.status);
+    println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
+    println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
 }

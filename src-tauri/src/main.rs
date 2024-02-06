@@ -65,7 +65,7 @@ fn main() {
 fn open_slack(window: tauri::Window, url: String) -> Result<(), String> {
     println!("Opening URL: {}", url);
     if webbrowser::open(&url).is_ok() {
-        window.close().unwrap();
+        window.hide().unwrap();
         Ok(())
     } else {
         Err(String::from("Failed to open browser"))

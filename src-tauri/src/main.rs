@@ -7,13 +7,19 @@
 //     format!("Hello, {}! You've been greeted from Rust!", name)
 // }
 
-use tauri::{SystemTray, Manager, SystemTrayEvent};
+use tauri::{SystemTray, Manager, SystemTrayEvent, CustomMenuItem, SystemTrayMenu};
 use tauri_plugin_positioner::{Position, WindowExt};
 use window_vibrancy::{apply_vibrancy, NSVisualEffectMaterial, NSVisualEffectState};
 use webbrowser;
 
 fn main() {
-    let tray = SystemTray::new().with_title("HH Dev");
+    // let tray = SystemTray::new().with_title("HH Dev");
+
+    let close = CustomMenuItem::new("close".to_string(), "Close");
+    let tray_menu = SystemTrayMenu::new()
+    .add_item(close);
+
+    let tray = SystemTray::new().with_menu(tray_menu);
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![open_slack])
@@ -54,6 +60,14 @@ fn main() {
                         window.set_focus().unwrap();
                     }
                 },
+                SystemTrayEvent::MenuItemClick { id, .. } => {
+                    match id.as_str() {
+                      "close" => {
+                        std::process::exit(0);
+                      }
+                      _ => {}
+                    }
+                  }
                 _ => {}
             }
         })

@@ -132,7 +132,7 @@ fn get_ios_simulators() -> Result<Vec<Simulator>, String> {
 #[tauri::command]
 fn open_ios(window: tauri::Window, uuid: String) {
     window.hide().unwrap();
-    let output = Command::new("xcrun")
+    Command::new("xcrun")
         .arg("simctl")
         .arg("boot")
         .arg(&uuid)

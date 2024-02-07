@@ -116,6 +116,9 @@ fn get_ios_simulators() -> Result<Vec<Simulator>, String> {
     let re = Regex::new(r"(.*) \((.*)\) \((Shutdown|Booted)\)").unwrap();
 
     for line in lines {
+        if line.contains("unavailable") {
+            continue;
+        }
         if let Some(caps) = re.captures(line) {
             let name = caps.get(1).map_or("", |m| m.as_str()).to_string();
             let uuid = caps.get(2).map_or("", |m| m.as_str()).to_string();
@@ -127,8 +130,9 @@ fn get_ios_simulators() -> Result<Vec<Simulator>, String> {
 }
 
 #[tauri::command]
-fn open_ios(uuid: String) {
-    Command::new("xcrun")
+fn open_ios(window: tauri::Window, uuid: String) {
+    window.hide().unwrap();
+    let output = Command::new("xcrun")
         .arg("simctl")
         .arg("boot")
         .arg(&uuid)

@@ -50,7 +50,8 @@ function App() {
   };
 
   const openSimulator = (uuid: string) => {
-    invoke("open_ios", { uuid }).catch(console.error);
+    const window = getCurrent();
+    invoke("open_ios", { window, uuid }).catch(console.error);
   };
 
   return (

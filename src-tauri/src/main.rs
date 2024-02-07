@@ -11,15 +11,15 @@ use tauri::{SystemTray, Manager, SystemTrayEvent, CustomMenuItem, SystemTrayMenu
 use tauri_plugin_positioner::{Position, WindowExt};
 use window_vibrancy::{apply_vibrancy, NSVisualEffectMaterial, NSVisualEffectState};
 use std::process::Command;
+use rdev::display_size;
 use webbrowser;
 
 fn main() {
-    // let tray = SystemTray::new().with_title("HH Dev");
 
+    // system tray stuffs
     let close = CustomMenuItem::new("close".to_string(), "Close");
     let tray_menu = SystemTrayMenu::new()
     .add_item(close);
-
     let tray = SystemTray::new().with_menu(tray_menu);
 
     tauri::Builder::default()
@@ -29,6 +29,11 @@ fn main() {
         .setup(|app| {
             let window = app.get_window("main").unwrap();
             app.set_activation_policy(tauri::ActivationPolicy::Accessory);
+
+            // set window size
+            let (_, height )= display_size();
+            let size = tauri::Size::new(tauri::LogicalSize::new(750.0, (height - 50) as f64));
+            window.set_size(size).unwrap();
         
             #[cfg(target_os = "macos")]
             apply_vibrancy(

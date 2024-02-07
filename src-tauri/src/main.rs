@@ -11,7 +11,9 @@ use tauri::{SystemTray, Manager, SystemTrayEvent, CustomMenuItem, SystemTrayMenu
 use tauri_plugin_positioner::{Position, WindowExt};
 use window_vibrancy::{apply_vibrancy, NSVisualEffectMaterial, NSVisualEffectState};
 use std::process::Command;
+use serde::Serialize;
 use rdev::display_size;
+use tauri::regex::Regex;
 use webbrowser;
 
 fn main() {
@@ -23,7 +25,7 @@ fn main() {
     let tray = SystemTray::new().with_menu(tray_menu);
 
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![open_slack, open_ios])
+        .invoke_handler(tauri::generate_handler![open_slack, open_ios, get_ios_simulators])
         .plugin(tauri_plugin_positioner::init())
         .system_tray(tray)
         .setup(|app| {
@@ -92,15 +94,44 @@ fn open_slack(window: tauri::Window, url: String) -> Result<(), String> {
     }
 }
 
+#[derive(Serialize)]
+pub struct Simulator {
+    name: String,
+    uuid: String,
+}
+
 #[tauri::command]
-fn open_ios() {
-    let output = Command::new("open")
-        .arg("-a")
-        .arg("Simulator")
+fn get_ios_simulators() -> Result<Vec<Simulator>, String> {
+    let output = Command::new("xcrun")
+        .arg("simctl")
+        .arg("list")
+        .arg("devices")
+        .output()
+        .map_err(|e| e.to_string())?;
+
+    let output_str = String::from_utf8_lossy(&output.stdout);
+    let lines: Vec<&str> = output_str.split('\n').collect();
+
+    let mut simulators: Vec<Simulator> = Vec::new();
+    let re = Regex::new(r"(.*) \((.*)\) \((Shutdown|Booted)\)").unwrap();
+
+    for line in lines {
+        if let Some(caps) = re.captures(line) {
+            let name = caps.get(1).map_or("", |m| m.as_str()).to_string();
+            let uuid = caps.get(2).map_or("", |m| m.as_str()).to_string();
+            simulators.push(Simulator {name, uuid});
+        }
+    }
+
+    Ok(simulators)
+}
+
+#[tauri::command]
+fn open_ios(uuid: String) {
+    Command::new("xcrun")
+        .arg("simctl")
+        .arg("boot")
+        .arg(&uuid)
         .output()
         .expect("Failed to execute command");
-
-    println!("status: {}", output.status);
-    println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
-    println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
 }

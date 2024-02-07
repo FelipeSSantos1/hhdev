@@ -8,6 +8,7 @@ function MenuItem({
   color = "text-stone-900",
   func,
   align = "justify-start",
+  fontSize = "medium",
 }: Props) {
   if (func) {
     return (
@@ -16,8 +17,10 @@ function MenuItem({
         onClick={() => func()}
         className="hover:bg-black/10 flex items-center p-2 cursor-default"
       >
-        {<Icon className={`${color} mr-2`} fontSize="medium" />}
-        <Typography className={color}>{text}</Typography>
+        {<Icon className={`${color} mr-2`} fontSize={fontSize} />}
+        <Typography className={color} fontSize={fontSize}>
+          {text}
+        </Typography>
       </div>
     );
   }
@@ -28,8 +31,10 @@ function MenuItem({
       rel="noreferrer"
       className={`hover:bg-black/10 flex items-center p-2 cursor-default ${align}`}
     >
-      {<Icon className={`${color} mr-2`} fontSize="medium" />}
-      <Typography className={color}>{text}</Typography>
+      {<Icon className={`${color} mr-2`} fontSize={fontSize} />}
+      <Typography className={color} fontSize={fontSize}>
+        {text}
+      </Typography>
     </a>
   );
 }

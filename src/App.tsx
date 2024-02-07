@@ -26,11 +26,31 @@ import MenuItem from "./components/menuItem";
 import { invoke } from "@tauri-apps/api/tauri";
 import { getCurrent } from "@tauri-apps/api/window";
 import Role from "./components/role";
+import { useEffect, useState } from "react";
+
+type Simulator = {
+  name: string;
+  uuid: string;
+};
 
 function App() {
+  const [simulators, setSimulators] = useState<Simulator[]>([]);
+
+  useEffect(() => {
+    invoke("get_ios_simulators")
+      .catch(console.error)
+      .then((simulators) => {
+        setSimulators(simulators as Simulator[]);
+      });
+  }, []);
+
   const openSlack = (url: string) => {
     const window = getCurrent();
     invoke("open_slack", { window, url }).catch(console.error);
+  };
+
+  const openSimulator = (uuid: string) => {
+    invoke("open_ios", { uuid }).catch(console.error);
   };
 
   return (
@@ -236,13 +256,38 @@ function App() {
             Simulators
           </Typography>
           <Divider className="pt-2" />
-          <MenuItem
-            Icon={PhoneIphone}
-            url="#"
-            func={() => invoke("open_ios")}
-            text="iPhone 15 Pro"
-          />
-          <MenuItem Icon={PhoneAndroid} url="" text="Pixel 6" />
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ArrowDropDown />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+            >
+              <Typography fontSize="small">iOS</Typography>
+            </AccordionSummary>
+            {simulators.map((simulator) => (
+              <AccordionDetails>
+                <MenuItem
+                  Icon={PhoneIphone}
+                  url="#"
+                  text={simulator.name}
+                  fontSize="small"
+                  func={() => openSimulator(simulator.uuid)}
+                />
+              </AccordionDetails>
+            ))}
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ArrowDropDown />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+            >
+              <Typography fontSize="small">Android</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <MenuItem Icon={PhoneAndroid} url="" text="Pixel 6" fontSize="small" />
+            </AccordionDetails>
+          </Accordion>
         </div>
       </div>
     </div>

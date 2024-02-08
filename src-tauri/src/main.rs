@@ -25,7 +25,7 @@ fn main() {
     let tray = SystemTray::new().with_menu(tray_menu);
 
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![open_slack, open_ios, get_ios_simulators])
+        .invoke_handler(tauri::generate_handler![open_slack, open_ios, get_ios_simulators, get_android_emulators, open_android])
         .plugin(tauri_plugin_positioner::init())
         .system_tray(tray)
         .setup(|app| {
@@ -85,7 +85,6 @@ fn main() {
 
 #[tauri::command]
 fn open_slack(window: tauri::Window, url: String) -> Result<(), String> {
-    println!("Opening URL: {}", url);
     if webbrowser::open(&url).is_ok() {
         window.hide().unwrap();
         Ok(())
@@ -138,4 +137,44 @@ fn open_ios(window: tauri::Window, uuid: String) {
         .arg(&uuid)
         .output()
         .expect("Failed to execute command");
+}
+
+#[derive(Serialize)]
+pub struct Emulator {
+    name: String,
+}
+
+#[tauri::command]
+fn get_android_emulators() -> Result<Vec<String>, String> {
+    let output = Command::new("emulator")
+        .arg("-list-avds")
+        .output()
+        .map_err(|e| e.to_string())?;
+
+    let output_str = String::from_utf8_lossy(&output.stdout);
+    let lines: Vec<&str> = output_str.split('\n').collect();
+
+    let mut emulators: Vec<String> = Vec::new();
+
+    for line in lines {
+        if line.is_empty() {
+            continue;
+        }
+        emulators.push(line.to_string());
+    }
+
+    Ok(emulators)
+}
+
+#[tauri::command]
+fn open_android(window: tauri::Window, name: String) {
+    window.hide().unwrap();
+    // we need to open the emulator in a new thread to avoid blocking the main thread
+    std::thread::spawn(move || {
+        Command::new("emulator")
+            .arg("-avd")
+            .arg(&name)
+            .output()
+            .expect("Failed to execute command");
+    });
 }

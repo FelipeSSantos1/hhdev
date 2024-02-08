@@ -35,12 +35,19 @@ type Simulator = {
 
 function App() {
   const [simulators, setSimulators] = useState<Simulator[]>([]);
+  const [emulators, setEmulators] = useState<string[]>([]);
 
   useEffect(() => {
     invoke("get_ios_simulators")
       .catch(console.error)
       .then((simulators) => {
         setSimulators(simulators as Simulator[]);
+      });
+
+    invoke("get_android_emulators")
+      .catch(console.error)
+      .then((emulators) => {
+        setEmulators(emulators as string[]);
       });
   }, []);
 
@@ -52,6 +59,11 @@ function App() {
   const openSimulator = (uuid: string) => {
     const window = getCurrent();
     invoke("open_ios", { window, uuid }).catch(console.error);
+  };
+
+  const openEmulator = (name: string) => {
+    const window = getCurrent();
+    invoke("open_android", { window, name }).catch(console.error);
   };
 
   return (
@@ -104,17 +116,20 @@ function App() {
           <Divider className="pt-2" />
           <MenuItem
             Icon={ChatBubbleOutlineOutlined}
-            url="https://hingehealth.enterprise.slack.com/archives/CQTUHLD6G"
+            url="#"
+            func={() => openSlack("https://hingehealth.enterprise.slack.com/archives/CQTUHLD6G")}
             text="PHX Channel"
           />
           <MenuItem
             Icon={ChatBubbleOutlineOutlined}
-            url="https://hingehealth.enterprise.slack.com/archives/C05K3GDUPQE"
+            url="#"
+            func={() => openSlack("https://hingehealth.enterprise.slack.com/archives/C05K3GDUPQE")}
             text="PHX Announcements"
           />
           <MenuItem
             Icon={ChatBubbleOutlineOutlined}
-            url="https://hingehealth.enterprise.slack.com/archives/C063QLB421M"
+            url="#"
+            func={() => openSlack("https://hingehealth.enterprise.slack.com/archives/C063QLB421M")}
             text="PHX Services Status"
           />
           <MenuItem
@@ -266,7 +281,7 @@ function App() {
               <Typography fontSize="small">iOS</Typography>
             </AccordionSummary>
             {simulators.map((simulator) => (
-              <AccordionDetails>
+              <AccordionDetails key={simulator.uuid}>
                 <MenuItem
                   Icon={PhoneIphone}
                   url="#"
@@ -285,9 +300,17 @@ function App() {
             >
               <Typography fontSize="small">Android</Typography>
             </AccordionSummary>
-            <AccordionDetails>
-              <MenuItem Icon={PhoneAndroid} url="" text="Pixel 6" fontSize="small" />
-            </AccordionDetails>
+            {emulators.map((emulator) => (
+              <AccordionDetails key={emulator}>
+                <MenuItem
+                  Icon={PhoneAndroid}
+                  url="#"
+                  text={emulator}
+                  fontSize="small"
+                  func={() => openEmulator(emulator)}
+                />
+              </AccordionDetails>
+            ))}
           </Accordion>
         </div>
       </div>

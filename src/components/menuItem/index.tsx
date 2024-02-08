@@ -15,7 +15,7 @@ function MenuItem({
       // biome-ignore lint/a11y/useKeyWithClickEvents: It's not necessary at this moment
       <div
         onClick={() => func()}
-        className="hover:bg-black/10 flex items-center p-2 cursor-default"
+        className="flex items-center p-2 cursor-default hover:bg-cyan-600/5"
       >
         {<Icon className={`${color} mr-2`} fontSize={fontSize} />}
         <Typography className={color} fontSize={fontSize}>
@@ -29,7 +29,7 @@ function MenuItem({
       href={url}
       target="_blank"
       rel="noreferrer"
-      className={`hover:bg-black/10 flex items-center p-2 cursor-default ${align}`}
+      className={`hover:bg-cyan-600/5 flex items-center p-2 cursor-default ${align}`}
     >
       {<Icon className={`${color} mr-2`} fontSize={fontSize} />}
       <Typography className={color} fontSize={fontSize}>
